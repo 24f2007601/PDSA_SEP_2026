@@ -1,6 +1,6 @@
 # Program Explanations
 
-Detailed walkthroughs for every GRPA solution in this repository.
+Detailed walkthroughs for every GRPA and PPA solution in this repository.
 
 ---
 
@@ -100,7 +100,62 @@ Result = [(3, 23), (7, 19), (13, 13)]  ✔
 
 ---
 
-## 3. `grpa2_w2.py` — Largest Element in a Sorted & Rotated List
+## 3. `grpa1_w2.py` — Combination Sort (Letter + Number Strings)
+
+### Problem
+
+Given a list of unique strings where each string starts with a letter (`a`–`z`) followed by a number (`0`–`99`), return two sorted lists:
+
+- **L1** — sorted by the first character only (stable — same-character strings keep their original order).
+- **L2** — sorted by first character ascending, then by number descending within each character group.
+
+### Algorithm — Stable Sort with Custom Keys
+
+```
+1.  L1 = sorted(strList, key = first character only)
+       Python's sorted() is stable, so same-character strings
+       preserve their original relative order.
+
+2.  L2 = sorted(strList, key = (first character, -number))
+       Negating the number gives descending numeric order
+       within each character group.
+```
+
+### Why It Works
+
+- **L1**: `key=lambda x: x[0]` sorts by letter only. Python's Timsort is stable, so ties keep the input order — exactly what the problem requires.
+- **L2**: `key=lambda x: (x[0], -int(x[1:]))` sorts by letter first, then by the negated number. Negation flips ascending into descending for the numeric part.
+
+### Step-by-Step Example
+
+```
+Input: ['d34', 'g54', 'd12', 'b87', 'g1', 'c65', 'g40', 'g5', 'd77']
+
+L1 (sort by letter, preserve original order within same letter):
+  b: b87
+  c: c65
+  d: d34, d12, d77   ← original order kept
+  g: g54, g1, g40, g5
+→ L1 = ['b87', 'c65', 'd34', 'd12', 'd77', 'g54', 'g1', 'g40', 'g5']  ✔
+
+L2 (sort by letter, then number descending):
+  b: b87
+  c: c65
+  d: d77, d34, d12   ← 77 > 34 > 12
+  g: g54, g40, g5, g1
+→ L2 = ['b87', 'c65', 'd77', 'd34', 'd12', 'g54', 'g40', 'g5', 'g1']  ✔
+```
+
+### Time Complexity
+
+| Step | Cost |
+|------|------|
+| Each `sorted()` call | O(n log n) |
+| **Total** | **O(n log n)** |
+
+---
+
+## 4. `grpa2_w2.py` — Largest Element in a Sorted & Rotated List
 
 ### Problem
 
@@ -146,7 +201,7 @@ Return 8  ✔
 
 ---
 
-## 4. `grpa3_w2.py` — Merge Two Sorted Arrays In Place
+## 5. `grpa3_w2.py` — Merge Two Sorted Arrays In Place
 
 ### Problem
 
@@ -191,3 +246,96 @@ Final:  A = [1, 2, 3, 4, 5, 6]   B = [9, 10, 13, 15]  ✔
 | **Total (worst case)** | **O(n × m)** |
 
 Where `n = len(A)` and `m = len(B)`.
+
+---
+
+## 6. `ppa1_w2.py` — Binary Search with Comparison Count
+
+### Problem
+
+Given a sorted list `L` and an integer `k`, perform binary search and return a tuple `(found, numComparisons)` — whether `k` exists in `L` and how many elements were actually compared to `k`.
+
+### Algorithm — Standard Binary Search with Counter
+
+```
+1.  Set left = 0, right = len(L) - 1, numComparisons = 0.
+2.  While left ≤ right:
+      a.  mid = (left + right) // 2
+      b.  numComparisons += 1
+      c.  If L[mid] == k  →  return (True, numComparisons)
+      d.  If L[mid] < k   →  left = mid + 1
+      e.  Else             →  right = mid - 1
+3.  Return (False, numComparisons).
+```
+
+### Why It Works
+
+This is textbook binary search. Each iteration halves the search space. The counter increments once per iteration because exactly one element (`L[mid]`) is compared to `k` each time.
+
+### Step-by-Step Example
+
+```
+L = [2, 6, 8, 11, 17, 23, 33, 44, 46, 50, 65],  k = 11
+
+Iteration 1:  left=0, right=10, mid=5  → L[5]=23 → 23 > 11 → right=4   (comparisons=1)
+Iteration 2:  left=0, right=4,  mid=2  → L[2]=8  →  8 < 11 → left=3    (comparisons=2)
+Iteration 3:  left=3, right=4,  mid=3  → L[3]=11 → 11 == 11 → FOUND    (comparisons=3)
+
+Return (True, 3)  ✔
+```
+
+### Time Complexity
+
+| Step | Cost |
+|------|------|
+| Binary search | O(log n) |
+| **Total** | **O(log n)** |
+
+---
+
+## 7. `ppa2_w2.py` — Counting Sort for Bounded Range
+
+### Problem
+
+Given a list `L` of `n` integers where each value is in `[0, r)`, sort `L` **in place** in O(n + r) time.
+
+### Algorithm — Counting Sort
+
+```
+1.  Create a counts array of size r, initialized to 0.
+2.  For each number in L, increment  counts[number].
+3.  Overwrite L in place:
+      For each value 0 to r-1:
+        write that value  counts[value]  times.
+```
+
+### Why It Works
+
+Since every element falls in a known, small range `[0, r)`, we can count how many times each value appears (O(n)), then reconstruct the sorted list by writing each value the correct number of times (O(n + r)). No comparison-based sorting is needed.
+
+### Step-by-Step Example
+
+```
+L = [2, 0, 1, 1, 2, 3, 0, 2, 1, 0, 2, 3, 1, 2],  r = 4
+
+Step 1 — Count:
+  counts = [0, 0, 0, 0]
+  After scanning L:  counts = [3, 4, 5, 2]
+    (three 0s, four 1s, five 2s, two 3s)
+
+Step 2 — Overwrite L:
+  val=0: write 0 three times  → L = [0, 0, 0, ...]
+  val=1: write 1 four times   → L = [0, 0, 0, 1, 1, 1, 1, ...]
+  val=2: write 2 five times   → L = [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, ...]
+  val=3: write 3 two times    → L = [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3]
+
+Result = [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3]  ✔
+```
+
+### Time Complexity
+
+| Step | Cost |
+|------|------|
+| Counting | O(n) |
+| Reconstructing | O(n + r) |
+| **Total** | **O(n + r)** |
