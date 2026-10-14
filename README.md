@@ -2,34 +2,37 @@
 
 Graded Programming Assignment (GRPA) and Practice Programming Assignment (PPA) solutions for the **PDSA** course.
 
-## Repository Structure
+## Project Structure
 
-### Week 1
-
-| File | Type | Problem |
-|------|------|---------|
-| `grpa1_w1.py` | GRPA | Minimum Difference among P elements |
-| `grpa 2_w1.py` | GRPA | Goldbach's Conjecture |
-
-### Week 2
-
-| File | Type | Problem |
-|------|------|---------|
-| `grpa1_w2.py` | GRPA | Combination Sort (letter + number strings) |
-| `grpa2_w2.py` | GRPA | Largest element in a sorted-rotated list (Binary Search) |
-| `grpa3_w2.py` | GRPA | Merge two sorted arrays in place |
-| `ppa1_w2.py` | PPA | Binary Search with comparison count |
-| `ppa2_w2.py` | PPA | Counting Sort for bounded range |
+```
+PDSA_SEP_2026/
+├── week1/
+│   ├── __init__.py
+│   ├── grpa1_min_difference.py      # Minimum difference among P elements
+│   └── grpa2_goldbach.py            # Goldbach's Conjecture
+├── week2/
+│   ├── __init__.py
+│   ├── grpa1_combination_sort.py    # Stable letter + number sort
+│   ├── grpa2_find_largest.py        # Largest in sorted-rotated list
+│   ├── grpa3_merge_in_place.py      # In-place merge (swap-only)
+│   ├── ppa1_binary_search.py        # Binary search with comparison count
+│   └── ppa2_counting_sort.py        # Counting sort for bounded range
+├── EXPLANATION.md
+└── README.md
+```
 
 ## Topics Covered
 
-- **Week 1** — Sorting, Sliding Window, Number Theory (Prime Testing)
-- **Week 2** — Stable Sorting, Binary Search, In-Place Merge, Counting Sort
+| Week | Topics |
+|------|--------|
+| **Week 1** | Sorting, Sliding Window, Number Theory (Primality Testing) |
+| **Week 2** | Stable Sorting, Binary Search, In-Place Merge, Counting Sort |
 
 ## How to Run
 
 ```bash
-python <filename>.py
+python -m week1.grpa1_min_difference
+python -m week2.ppa1_binary_search
 ```
 
 > **Python 3.10+** is recommended.
