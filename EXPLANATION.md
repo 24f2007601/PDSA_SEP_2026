@@ -521,3 +521,68 @@ Backward (last → head):  5,3,1  ✔
 | `insert_end` | O(1) |
 | `delete_end` | O(1) |
 | `__str__` (traversal) | O(n) |
+
+---
+
+## 12. `concept_questions/concept3.py` — First Eligible Student (Binary Search on Sorted Binary List)
+
+### Problem
+
+A sorted list contains only `0`s ("not eligible") and `1`s ("eligible"), with all `0`s appearing before all `1`s. Find the **zero-based index of the first `1`**. Return `-1` if no `1` exists.
+
+### Why Binary Search?
+
+A linear scan would work in O(n), but since the list is **sorted**, we can exploit the structure and halve the search space each step — achieving **O(log n)**.
+
+### Algorithm — Left-Boundary Binary Search
+
+```
+1.  Set left = 0, right = len - 1, first_eligible = -1.
+2.  While left ≤ right:
+      a.  mid = (left + right) // 2
+      b.  If status[mid] == 1:
+            record first_eligible = mid
+            search LEFT  →  right = mid - 1   (might be an earlier 1)
+      c.  Else (status[mid] == 0):
+            search RIGHT →  left  = mid + 1   (first 1 must be here or later)
+3.  Return first_eligible.
+```
+
+### Key Insight
+
+When `status[mid] == 1`, **do not stop** — save the index as a candidate and keep searching left. The first `1` could still be at a smaller index. Only stop when `left > right`.
+
+### Step-by-Step Example
+
+```
+status = [0, 0, 0, 1, 1, 1]
+          0  1  2  3  4  5
+
+left=0, right=5
+─────────────────────────────────────────────────────
+Iter 1:  mid = 2  →  status[2] = 0  →  left  = 3
+Iter 2:  mid = 4  →  status[4] = 1  →  first_eligible = 4,  right = 3
+Iter 3:  mid = 3  →  status[3] = 1  →  first_eligible = 3,  right = 2
+Iter 4:  left(3) > right(2)  →  stop
+
+Return 3  ✔
+```
+
+### Edge Cases
+
+| Input | Behaviour | Output |
+|-------|-----------|--------|
+| `[1, 1, 1, 1, 1, 1]` | First `mid` is 1; keeps going left until boundary | `0` |
+| `[0, 0, 0, 0, 0]` | Never records a candidate | `-1` |
+| `[0, 0, 1, 1, 1]` | Finds first 1 at index 2 | `2` |
+| `[1]` | Single-element 1, found immediately | `0` |
+| `[0]` | Single-element 0, never recorded | `-1` |
+
+### Time Complexity
+
+| Step | Cost |
+|------|------|
+| Binary search | O(log n) |
+| **Total** | **O(log n)** |
+| **Space** | **O(1)** |
+
