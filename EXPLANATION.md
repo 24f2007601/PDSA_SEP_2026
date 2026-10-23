@@ -315,3 +315,209 @@ Result = [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3]  ✔
 | Counting | O(n) |
 | Reconstructing | O(n + r) |
 | **Total** | **O(n + r)** |
+
+---
+
+## 8. `week3/grpa1_dish_prepare_order.py` — Dish Preparation Order
+
+### Problem
+
+A restaurant receives `n` orders as a list of dish IDs. Return the unique dish IDs in **descending order of frequency** (most-ordered first). Break ties by **ascending dish ID**.
+
+### Algorithm — Frequency Map + Compound Sort Key
+
+```
+1.  Build a frequency map:  dish_id → count.
+2.  Sort the map's items by key = (-count, dish_id).
+3.  Return the sorted dish IDs.
+```
+
+### Why `-count` for Descending Order
+
+Python's `sorted()` is ascending by default. Negating `count` turns the largest count into the smallest key, achieving descending frequency with a single sort pass.
+
+### Step-by-Step Example
+
+```
+order_list = [1004,1003,1004,1003,1004,1005,1003,1004,1003,1002,1005,1002,1002,1001,1002,1002,1002]
+
+Frequency map:
+  1001 → 1
+  1002 → 6
+  1003 → 4
+  1004 → 4
+  1005 → 2
+
+Sort by (-freq, id):
+  (-6, 1002) → 1002
+  (-4, 1003) → 1003
+  (-4, 1004) → 1004   ← same freq, smaller ID first
+  (-2, 1005) → 1005
+  (-1, 1001) → 1001
+
+Result = [1002, 1003, 1004, 1005, 1001]  ✔
+```
+
+### Time Complexity
+
+| Step | Cost |
+|------|------|
+| Building frequency map | O(n) |
+| Sorting k unique dishes | O(k log k) |
+| **Total** | **O(n + k log k)** |
+
+---
+
+## 9. `week3/grpa2_evaluate_expression.py` — Postfix Expression Evaluator
+
+### Problem
+
+Evaluate a postfix (Reverse Polish Notation) expression string where tokens are separated by spaces. Supported operators: `+`, `-`, `*`, `/`, `**`.
+
+### Algorithm — Stack-Based Evaluation
+
+```
+1.  Split the expression into tokens.
+2.  For each token:
+      • If it's a number  →  push float(token) onto the stack.
+      • If it's an operator  →  pop B then pop A, compute A op B, push result.
+3.  The single remaining stack value is the answer.
+```
+
+### Why Pop Order Matters
+
+The **first** pop is the **right** operand (B) and the **second** pop is the **left** operand (A). For non-commutative operators (`-`, `/`, `**`) this order is critical.
+
+### Step-by-Step Example
+
+```
+Expression: "2 3 1 * + 9 -"
+
+Token  2 → stack: [2.0]
+Token  3 → stack: [2.0, 3.0]
+Token  1 → stack: [2.0, 3.0, 1.0]
+Token  * → pop 1.0(B), 3.0(A) → 3.0 * 1.0 = 3.0  →  stack: [2.0, 3.0]
+Token  + → pop 3.0(B), 2.0(A) → 2.0 + 3.0 = 5.0  →  stack: [5.0]
+Token  9 → stack: [5.0, 9.0]
+Token  - → pop 9.0(B), 5.0(A) → 5.0 - 9.0 = -4.0 →  stack: [-4.0]
+
+Result = -4.0  ✔
+```
+
+### Time Complexity
+
+| Step | Cost |
+|------|------|
+| Tokenising & scanning | O(n) |
+| Each push / pop | O(1) |
+| **Total** | **O(n)** |
+
+---
+
+## 10. `week3/grpa3_reverse_linked_list.py` — Reverse a Singly Linked List
+
+### Problem
+
+Given the head node of a singly linked list, reverse the list **in place** by rewiring `next` pointers only. No new nodes may be created and no values may be swapped.
+
+### Algorithm — Three-Pointer Iteration
+
+```
+prev    = None
+current = root
+
+While current is not None:
+    next_node   = current.next   ← save successor
+    current.next = prev          ← reverse the pointer
+    prev        = current        ← advance prev
+    current     = next_node      ← advance current
+
+Return prev   ← new head
+```
+
+### Why Three Pointers
+
+- `prev` tracks the already-reversed portion (new chain growing leftward).
+- `current` is the node being processed.
+- `next_node` preserves the original successor before it is overwritten.
+
+### Step-by-Step Example
+
+```
+Original: 64 → 7 → 28 → 43 → 3 → None
+
+Step 1:  prev=None,  current=64  → 64.next=None,  prev=64,  current=7
+Step 2:  prev=64,    current=7   → 7.next=64,     prev=7,   current=28
+Step 3:  prev=7,     current=28  → 28.next=7,     prev=28,  current=43
+Step 4:  prev=28,    current=43  → 43.next=28,    prev=43,  current=3
+Step 5:  prev=43,    current=3   → 3.next=43,     prev=3,   current=None
+
+Return 3  →  3 → 43 → 28 → 7 → 64 → None  ✔
+```
+
+### Time Complexity
+
+| Step | Cost |
+|------|------|
+| Single pass through list | O(n) |
+| **Total** | **O(n)** |
+| **Space** | **O(1)** |
+
+---
+
+## 11. `week3/ppa1_doubly_linked_list.py` — Doubly Linked List (O(1) Tail Operations)
+
+### Problem
+
+Implement a doubly linked list with two O(1) methods:
+- `insert_end(data)` — append to the tail.
+- `delete_end()` — remove from the tail.
+
+### Data Structure
+
+Each `Node` stores `data`, `next` (→ successor), and `prev` (→ predecessor).  
+The list maintains `head` (first node) and `last` (last node) pointers to avoid traversal.
+
+### Algorithm — `insert_end`
+
+```
+1.  Create new_node.
+2.  If list is empty  →  head = last = new_node.
+3.  Else:
+      new_node.prev = last
+      last.next     = new_node
+      last          = new_node
+```
+
+### Algorithm — `delete_end`
+
+```
+1.  If list is empty → return.
+2.  If only one node → head = last = None.
+3.  Else:
+      last      = last.prev
+      last.next = None
+```
+
+Both operations touch only the `last` pointer and its immediate neighbour — no traversal needed, so both run in **O(1)**.
+
+### Step-by-Step Example
+
+```
+Insert 1, 3, 5, 7, 9:
+  head=1 ↔ 3 ↔ 5 ↔ 7 ↔ 9=last
+
+delete_end():  removes 9  →  head=1 ↔ 3 ↔ 5 ↔ 7=last
+delete_end():  removes 7  →  head=1 ↔ 3 ↔ 5=last
+
+Forward  (head → last):  1,3,5  ✔
+Backward (last → head):  5,3,1  ✔
+```
+
+### Time Complexity
+
+| Operation | Cost |
+|-----------|------|
+| `insert_end` | O(1) |
+| `delete_end` | O(1) |
+| `__str__` (traversal) | O(n) |

@@ -17,6 +17,12 @@ PDSA_SEP_2026/
 │   ├── grpa3_merge_in_place.py      # In-place merge (swap-only)
 │   ├── ppa1_binary_search.py        # Binary search with comparison count
 │   └── ppa2_counting_sort.py        # Counting sort for bounded range
+├── week3/
+│   ├── __init__.py
+│   ├── grpa1_dish_prepare_order.py  # Frequency sort with tie-breaking
+│   ├── grpa2_evaluate_expression.py # Postfix (RPN) expression evaluator
+│   ├── grpa3_reverse_linked_list.py # Singly linked list reversal
+│   └── ppa1_doubly_linked_list.py   # Doubly linked list (O(1) tail ops)
 ├── EXPLANATION.md
 └── README.md
 ```
@@ -27,12 +33,15 @@ PDSA_SEP_2026/
 |------|--------|
 | **Week 1** | Sorting, Sliding Window, Number Theory (Primality Testing) |
 | **Week 2** | Stable Sorting, Binary Search, In-Place Merge, Counting Sort |
+| **Week 3** | Hash Maps, Stacks (RPN Evaluation), Linked Lists (Singly & Doubly) |
 
 ## How to Run
 
 ```bash
 python -m week1.grpa1_min_difference
 python -m week2.ppa1_binary_search
+python -m week3.grpa2_evaluate_expression
+python -m week3.ppa1_doubly_linked_list
 ```
 
 > **Python 3.10+** is recommended.
