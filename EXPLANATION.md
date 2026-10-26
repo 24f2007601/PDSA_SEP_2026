@@ -524,7 +524,7 @@ Backward (last → head):  5,3,1  ✔
 
 ---
 
-## 12. `concept_questions/concept3.py` — First Eligible Student (Binary Search on Sorted Binary List)
+## 12. `concept_questions/week3_first_eligible_binary_search.py` — First Eligible Student (Binary Search on Sorted Binary List)
 
 ### Problem
 
@@ -588,7 +588,7 @@ Return 3  ✔
 
 ---
 
-## 13. `live_coding_problems/week3_p1.py` — Remove Duplicates from Sorted Linked List
+## 13. `live_coding_problems/week3_remove_duplicates.py` — Remove Duplicates from Sorted Linked List
 
 ### Problem
 
@@ -634,7 +634,7 @@ Output: Output Linked List: 1 2 3 4 5 7 9  ✔
 
 ---
 
-## 14. `live_coding_problems/week3_p2.py` — Doubly Linked List: `insert_at_pos`
+## 14. `live_coding_problems/week3_doubly_ll_insert_at_pos.py` — Doubly Linked List: `insert_at_pos`
 
 ### Problem
 
@@ -682,7 +682,7 @@ Result: 1 ↔ 20 ↔ 3 ↔ 5 ↔ 7 ↔ 9  ✔
 
 ---
 
-## 15. `live_coding_problems/week3_p3.py` — Merge Two Sorted Linked Lists
+## 15. `live_coding_problems/week3_merge_sorted_ll.py` — Merge Two Sorted Linked Lists
 
 ### Problem
 

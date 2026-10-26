@@ -8,26 +8,30 @@ Graded Programming Assignment (GRPA) and Practice Programming Assignment (PPA) s
 PDSA_SEP_2026/
 ├── week1/
 │   ├── __init__.py
-│   ├── grpa1_min_difference.py      # Minimum difference among P elements
-│   └── grpa2_goldbach.py            # Goldbach's Conjecture
+│   ├── grpa1_min_difference.py               # Minimum difference among P elements
+│   └── grpa2_goldbach.py                     # Goldbach's Conjecture
 ├── week2/
 │   ├── __init__.py
-│   ├── grpa1_combination_sort.py    # Stable letter + number sort
-│   ├── grpa2_find_largest.py        # Largest in sorted-rotated list
-│   ├── grpa3_merge_in_place.py      # In-place merge (swap-only)
-│   ├── ppa1_binary_search.py        # Binary search with comparison count
-│   └── ppa2_counting_sort.py        # Counting sort for bounded range
+│   ├── grpa1_combination_sort.py             # Stable letter + number sort
+│   ├── grpa2_find_largest.py                 # Largest in sorted-rotated list
+│   ├── grpa3_merge_in_place.py               # In-place merge (swap-only)
+│   ├── ppa1_binary_search.py                 # Binary search with comparison count
+│   └── ppa2_counting_sort.py                 # Counting sort for bounded range
 ├── week3/
 │   ├── __init__.py
-│   ├── grpa1_dish_prepare_order.py  # Frequency sort with tie-breaking
-│   ├── grpa2_evaluate_expression.py # Postfix (RPN) expression evaluator
-│   ├── grpa3_reverse_linked_list.py # Singly linked list reversal
-│   └── ppa1_doubly_linked_list.py   # Doubly linked list (O(1) tail ops)
+│   ├── grpa1_dish_prepare_order.py           # Frequency sort with tie-breaking
+│   ├── grpa2_evaluate_expression.py          # Postfix (RPN) expression evaluator
+│   ├── grpa3_reverse_linked_list.py          # Singly linked list reversal
+│   └── ppa1_doubly_linked_list.py            # Doubly linked list (O(1) tail ops)
 ├── live_coding_problems/
-│   ├── week3_p1.py                  # Remove duplicates from sorted linked list
-│   ├── week3_p2.py                  # Doubly linked list — insert_at_pos
-│   └── week3_p3.py                  # Merge two sorted linked lists
+│   ├── __init__.py
+│   ├── week3_remove_duplicates.py            # Remove duplicates from sorted LL
+│   ├── week3_doubly_ll_insert_at_pos.py      # Doubly LL — insert_at_pos
+│   ├── week3_merge_sorted_ll.py              # Merge two sorted linked lists
+│   └── week3_stack_using_queues.py           # Stack implemented with two Queues
 ├── concept_questions/
+│   ├── __init__.py
+│   └── week3_first_eligible_binary_search.py # First eligible student (binary search)
 ├── EXPLANATION.md
 └── README.md
 ```
@@ -50,9 +54,10 @@ python -m week3.grpa2_evaluate_expression
 python -m week3.ppa1_doubly_linked_list
 
 # Live coding problems (run directly, reads from stdin)
-python live_coding_problems/week3_p1.py
-python live_coding_problems/week3_p2.py
-python live_coding_problems/week3_p3.py
+python live_coding_problems/week3_remove_duplicates.py
+python live_coding_problems/week3_doubly_ll_insert_at_pos.py
+python live_coding_problems/week3_merge_sorted_ll.py
+python live_coding_problems/week3_stack_using_queues.py
 ```
 
 > **Python 3.10+** is recommended.
