@@ -586,3 +586,152 @@ Return 3  ✔
 | **Total** | **O(log n)** |
 | **Space** | **O(1)** |
 
+---
+
+## 13. `live_coding_problems/week3_p1.py` — Remove Duplicates from Sorted Linked List
+
+### Problem
+
+Given a non-empty singly linked list with `n` nodes sorted in **ascending order**, remove all nodes with duplicate values so that each value appears only once. The function `removeDuplicate(head)` must modify the list **in place** and return nothing.
+
+### Algorithm — Single-Pass Pointer Walk
+
+```
+current = head
+While current and current.next exist:
+    If current.data == current.next.data:
+        current.next = current.next.next   ← skip the duplicate
+    Else:
+        current = current.next             ← advance
+```
+
+### Why It Works
+
+Because the list is **sorted**, all duplicates are **adjacent**. A single left-to-right pass is sufficient — whenever the next node matches the current one, bypass it by rewiring `current.next`. No second pass is ever needed.
+
+### Step-by-Step Example
+
+```
+Input:  1 → 1 → 2 → 2 → 2 → 3 → 3 → 4 → 4 → 4 → 4 → 5 → 7 → 9
+
+current=1: next=1, same  → skip → 1 → 2 → 2 → 2 → 3 ...
+current=1: next=2, diff  → advance
+current=2: next=2, same  → skip
+current=2: next=2, same  → skip
+current=2: next=3, diff  → advance
+... (continues)
+
+Output: Output Linked List: 1 2 3 4 5 7 9  ✔
+```
+
+### Time Complexity
+
+| Step | Cost |
+|------|------|
+| Single pass | O(n) |
+| **Total** | **O(n)** |
+| **Space** | **O(1)** |
+
+---
+
+## 14. `live_coding_problems/week3_p2.py` — Doubly Linked List: `insert_at_pos`
+
+### Problem
+
+Given the class `doubly_linked_list` (with `head` and `last` pointers) and `Node` (with `data`, `next`, `prev`), implement:
+
+`insert_at_pos(data, pos)` — insert a new node at position `pos`, where `1 < pos <= length(list)`.
+
+### Algorithm — Traverse to (pos − 1), Rewire
+
+```
+1. Create new_node with given data.
+2. Walk from head to node at position (pos - 1) → call it `current`.
+3. Let next_node = current.next.
+4. Wire up:
+     new_node.prev = current
+     new_node.next = next_node
+     current.next  = new_node
+     if next_node exists: next_node.prev = new_node
+     else: self.last = new_node   (inserted at tail)
+```
+
+### Step-by-Step Example
+
+```
+List:   1 ↔ 3 ↔ 5 ↔ 7 ↔ 9,   insert 20 at pos=2
+
+Traverse to pos-1=1  →  current = node(1)
+next_node = node(3)
+
+new_node(20).prev = node(1)
+new_node(20).next = node(3)
+node(1).next      = node(20)
+node(3).prev      = node(20)
+
+Result: 1 ↔ 20 ↔ 3 ↔ 5 ↔ 7 ↔ 9  ✔
+```
+
+### Time Complexity
+
+| Step | Cost |
+|------|------|
+| Traversal to pos | O(pos) |
+| Pointer rewiring | O(1) |
+| **Total (worst case)** | **O(n)** |
+
+---
+
+## 15. `live_coding_problems/week3_p3.py` — Merge Two Sorted Linked Lists
+
+### Problem
+
+Given two non-empty singly linked lists sorted in ascending order, merge them into one sorted linked list. `mergeSortedList(head1, head2)` must **return** the head of the merged list.
+
+### Algorithm — Recursive Merge
+
+```
+Base cases:
+    If head1 is None → return head2
+    If head2 is None → return head1
+
+If head1.data <= head2.data:
+    head1.next = mergeSortedList(head1.next, head2)
+    return head1
+Else:
+    head2.next = mergeSortedList(head1, head2.next)
+    return head2
+```
+
+### Why It Works
+
+At each step, we pick the smaller of the two current heads and recursively attach the rest of the merged list to it. The recursion unwinds naturally once either list is exhausted.
+
+### Step-by-Step Example
+
+```
+L1: 1 → 3 → 5 → 7 → 9 → 11
+L2: 2 → 4 → 6
+
+merge(1, 2): 1 <= 2 → 1.next = merge(3, 2)
+  merge(3, 2): 3 > 2  → 2.next = merge(3, 4)
+    merge(3, 4): 3 <= 4 → 3.next = merge(5, 4)
+      merge(5, 4): 5 > 4  → 4.next = merge(5, 6)
+        merge(5, 6): 5 <= 6 → 5.next = merge(7, 6)
+          merge(7, 6): 7 > 6  → 6.next = merge(7, None) = 7→9→11
+        → 5 → 7 → 9 → 11
+      → 4 → 5 → 7 → 9 → 11
+    → 3 → 4 → 5 → 7 → 9 → 11
+  → 2 → 3 → 4 → 5 → 7 → 9 → 11
+→ 1 → 2 → 3 → 4 → 5 → 7 → 9 → 11
+
+Output Linked List: 1 2 3 4 5 6 7 9 11  ✔
+```
+
+### Time Complexity
+
+| Step | Cost |
+|------|------|
+| Recursive calls | O(n + m) |
+| **Total** | **O(n + m)** |
+| **Space (call stack)** | **O(n + m)** |
