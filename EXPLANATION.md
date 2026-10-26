@@ -735,3 +735,172 @@ Output Linked List: 1 2 3 4 5 6 7 9 11  ✔
 | Recursive calls | O(n + m) |
 | **Total** | **O(n + m)** |
 | **Space (call stack)** | **O(n + m)** |
+
+
+---
+
+## 16. `live_coding_problems/week2_find_peak.py` — Find Peak Element
+
+### Problem
+
+Given a list of `n` distinct elements, return the **peak element** — one that is greater than both its neighbours (corner elements have only one neighbour). Exactly one peak exists. Required complexity: **O(log n)**.
+
+### Algorithm — Binary Search
+
+`
+low = 0, high = n - 1
+
+While low <= high:
+    mid = (low + high) // 2
+    left_ok  = mid == 0        OR L[mid] > L[mid-1]
+    right_ok = mid == n-1      OR L[mid] > L[mid+1]
+
+    if left_ok AND right_ok  -> return L[mid]   (peak found)
+    if L[mid-1] > L[mid]     -> search left  (high = mid-1)
+    else                     -> search right (low  = mid+1)
+`
+
+### Why It Works
+
+If the left neighbour is larger, the peak **must** be somewhere to the left. Otherwise it is to the right.
+
+### Step-by-Step Example
+
+`
+L = [5, 10, 20, 15]
+
+Iter 1: mid=1  10 < 20 (right neighbour)  -> go right
+Iter 2: mid=2  20 > 10 and 20 > 15        -> peak!
+
+Return 20  (correct)
+`
+
+### Time Complexity
+
+| Step | Cost |
+|------|------|
+| Binary search | O(log n) |
+| **Total** | **O(log n)** |
+
+---
+
+## 17. `live_coding_problems/week2_find_common_elements.py` — Find Common Elements (No Sets)
+
+### Problem
+
+Given two integer lists `L1` and `L2` of the same length `n` (each with distinct values), return elements appearing in both. No Python `set` allowed. Required: **O(n log n)**.
+
+### Algorithm — Sort + Two Pointers
+
+`
+sorted1 = sorted(L1)
+sorted2 = sorted(L2)
+i = j = 0
+
+While i < len(sorted1) AND j < len(sorted2):
+    if sorted1[i] == sorted2[j]  ->  collect, advance both
+    if sorted1[i]  < sorted2[j]  ->  advance i
+    else                         ->  advance j
+`
+
+### Step-by-Step Example
+
+`
+L1 = [3, 7, 2, 9, 5]  sorted -> [2, 3, 5, 7, 9]
+L2 = [6, 3, 7, 5, 4]  sorted -> [3, 4, 5, 6, 7]
+
+2 < 3 -> i++   |   3==3 -> collect   |   5>4 -> j++
+5==5 -> collect |   7>6 -> j++   |   7==7 -> collect
+
+Result = [3, 5, 7]  (correct)
+`
+
+### Time Complexity
+
+| Step | Cost |
+|------|------|
+| Two sorted() calls | O(n log n) |
+| Two-pointer scan | O(n) |
+| **Total** | **O(n log n)** |
+
+---
+
+## 18. `live_coding_problems/week2_merge_sort_subordinates.py` — Merge Sort Subordinates Counter
+
+### Problem
+
+A deck of cards is distributed through a binary tree of subordinates (modelled on merge sort). Each node splits, delegates, and merges. Return `(sorted_list, number_of_people_involved)`.
+
+### Algorithm
+
+`
+If n <= 1:  return (L, 1)
+If n == 2:  return (sorted(L), 1)
+
+left_sorted,  left_count  = subordinates(L[:mid])
+right_sorted, right_count = subordinates(L[mid:])
+
+return (merge(left_sorted, right_sorted),  1 + left_count + right_count)
+`
+
+### Step-by-Step Example
+
+`
+subordinates([194, 69, 103, 150, 151, 44, 103, 98])  <- 1 person
++-- subordinates([194, 69, 103, 150])                 <- 1
+|   +-- subordinates([194, 69])   base (1)
+|   +-- subordinates([103, 150])  base (1)
++-- subordinates([151, 44, 103, 98])                  <- 1
+    +-- subordinates([151, 44])   base (1)
+    +-- subordinates([103, 98])   base (1)
+
+Total = 1 + 3 + 3 = 7  (correct)
+`
+
+### Time Complexity
+
+| Step | Cost |
+|------|------|
+| Merge sort | O(n log n) |
+| **Total** | **O(n log n)** |
+
+---
+
+## 19. `live_coding_problems/week2_find_pair_sum.py` — Find Pair with Target Sum
+
+### Problem
+
+Given a list `L` and a target `pairSum`, return `True` if any two elements sum to `pairSum`, else `False`. Required: **O(n log n)**.
+
+### Algorithm — Sort + Two Pointers
+
+`
+sorted_L = sorted(L)
+left = 0,  right = len - 1
+
+While left < right:
+    s = sorted_L[left] + sorted_L[right]
+    if s == pairSum  ->  True
+    if s  < pairSum  ->  left  += 1
+    else             ->  right -= 1
+
+Return False
+`
+
+### Step-by-Step Example
+
+`
+L = [10, 4, 11, 5, 1, 8, 7],  pairSum = 21
+sorted -> [1, 4, 5, 7, 8, 10, 11]
+
+(1+11)=12 < 21 -> left++  ...  (10+11)=21 == 21 -> True  (correct)
+`
+
+### Time Complexity
+
+| Step | Cost |
+|------|------|
+| sorted() | O(n log n) |
+| Two-pointer scan | O(n) |
+| **Total** | **O(n log n)** |
+| **Space** | **O(n)** |
